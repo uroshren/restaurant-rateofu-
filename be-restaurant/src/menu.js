@@ -1,6 +1,3 @@
-import gql from 'graphql-tag';
-import { buildASTSchema } from 'graphql';
-
 export const ITEMS = [
   {
     name: "Grilled space-whale steak with algae puree",
@@ -38,18 +35,4 @@ export const ITEMS = [
     type: "Drink"
   },
 ];
-
-export const schema = buildASTSchema(gql`
-  type Query {
-    items: [Item]
-    item(id: ID!): Item
-  }
-
-  type Item {
-    id: ID
-    name: String
-    price: Float
-    type: String 
-  }
-`);
 

@@ -18,8 +18,18 @@ const List = styled.div`
 `;
 
 const Item = styled.div`
+  display: flex;
   margin-bottom: 8px;
 `;
+
+const Info = ({value}) => {
+  const StyledInfo = styled.div`
+    margin-right: 8px;
+  `;
+  return (
+    <StyledInfo>{value}</StyledInfo>
+  )
+}
 
 export const GetMenu = () => {
   const { loading, error, data } = useQuery(ITEMS, {})
@@ -36,7 +46,9 @@ export const GetMenu = () => {
       {items.map(({name, price, type}) => {
         return (
           <Item>
-            {name} £{price} {type}
+            <Info value={name} />
+            <Info value={`£${price}`} />
+            <Info value={type} />
           </Item>
         )
       })}
