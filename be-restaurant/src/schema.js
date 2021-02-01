@@ -7,22 +7,27 @@ export const schema = buildASTSchema(gql`
     user(id: ID): User
     items: [Item]
     item(id: ID!): Item
+    orders: [Order]
   }
 
   type Mutation {
     createOrder(input: OrderInput!): Bill!
-    login(input: LoginInput): String!
+    login(input: LoginInput): Authorized!
     logout(input: LoginInput): String!
   }
 
-  input LoginInput {
-    name
-  } 
+  type Authorized {
+    authorized: Boolean
+  }
 
   type Bill {
     items: [Item]
     totalPrice: Float
   } 
+
+  input LoginInput {
+    name: String!
+  }
 
   input OrderInput {
     items: [ItemInput]!
@@ -36,7 +41,12 @@ export const schema = buildASTSchema(gql`
     type: String!
     quantity: Float!
     time: Float!
-    prepared: Boolean!
+    prepared: Boolean
+  }
+
+  type Order { 
+    id: ID
+    items: [Item]
   }
 
   type Item {
@@ -44,7 +54,7 @@ export const schema = buildASTSchema(gql`
     name: String
     price: Float
     type: String
-    time: String
+    time: Float
   }
 
   type User {

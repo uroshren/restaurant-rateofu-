@@ -1,28 +1,25 @@
 import { STAFF } from './staff.js';
 import { ORDERS } from './orders.js';
 
-const setOrderAvailable = (index, foodOrDrink) => ORDERS[index] = foodOrDrink;
-
-const waitTillCompletion = async (totalTime, orderId, index, foodOrDrinks) => {
+const setOrderAvailable = ({ orderId, foodOrDrink }) => ORDERS[orderId] = foodOrDrink;
+const delay = ms => new Promise(res => setTimeout(res, ms));
+const waitTillCompletion = async (totalTime, orderId, index, foodOrDrink) => {
   await delay(totalTime*1000)
-  console.log("Chef ", theChefThatWillCook.name, " has finished preparing order number ", orderId);
-  setOrderAvailable(orderId, foodOrDrink)
+  setOrderAvailable({ orderId, foodOrDrink })
 }
 
 export const prepareFood = (food, orderId) => {
   const theChefThatWillCook = STAFF.find(staff => (staff.type === "Chef") && (staff.available === true))
   const chefIndex = STAFF.findIndex(staff => staff.name === theChefThatWillCook.name)
   const totalTime = food.reduce((acc, element) => acc + (element.time * element.quantity), 0);
-  const delay = ms => new Promise(res => setTimeout(res, ms));
-  waitTillCompletion(totalTime, orderId, index, 'food')
+  waitTillCompletion({ totalTime, orderId, index: chefIndex, foodOrDrink: 'food' })
 }
 
 export const prepareDrinks = (drinks, orderId) => {
   const theBarmanThatWillMakeDrinks = STAFF.find(staff => (staff.type === "Barman") && (staff.available === true))
   const barmanIndex = STAFF.findIndex(staff => staff.name === theBarmanThatWillMakeDrinks.name)
-  const totalTime = food.reduce((acc, element) => acc + (element.time * element.quantity), 0);
-  const delay = ms => new Promise(res => setTimeout(res, ms));
-  waitTillCompletion(totalTime, orderId, index, 'drinks')
+  const totalTime = drinks.reduce((acc, element) => acc + (element.time * element.quantity), 0);
+  waitTillCompletion({ totalTime, orderId, index: barmanIndex, foodOrDrink: 'drinks' })
 }
 
 export const findAvailableWaiter = (orderId) => {

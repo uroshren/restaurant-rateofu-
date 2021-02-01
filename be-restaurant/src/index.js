@@ -6,7 +6,7 @@ import { schema } from './schema.js'
 import { ITEMS } from './menu.js';
 import { STAFF } from './staff.js';
 import { ORDERS } from './orders.js';
-import { prepareFood, prepareDrinks } from './preparing.js';
+import { prepareFood, prepareDrinks, findAvailableWaiter } from './preparing.js';
 
 const mapElement = (element, id) => element && ({ id, ...element });
 
@@ -29,21 +29,23 @@ const root = {
     const food = items.filter(item => item.type === "Food")
     const drinks = items.filter(item => item.type === "Drink")
     findAvailableWaiter(orderId);
-    prepareDrinks(drinks);
-    prepareFood(food, orderId);
+    if (drinks) prepareDrinks(drinks);
+    if (food) prepareFood(food, orderId);
     return {items, totalPrice};
   },
   login: ({ input: { name } }) => {
     const waiterIndex = STAFF.findIndex(staff => staff.name === name)
     STAFF[waiterIndex].available = true;
-
-    return "Authorized";
+    const authorized = true;
+    
+    return { authorized };
   },
   logout: ({ input: { name } }) => {
     const waiterIndex = STAFF.findIndex(staff => staff.name === name)
     STAFF[waiterIndex].available = false;
-
-    return "Non-Authorized";
+    const authorized = false;
+    
+    return { authorized };
   },
 
 };
@@ -56,6 +58,6 @@ app.use('/graphql', graphqlHTTP({
   graphiql: true,
 }));
 
-const port = process.env.PORT || 8080
+const port = process.env.PORT || 3001
 app.listen(port);
 console.log(`Running a GraphQL API server at localhost:${port}/graphql`);

@@ -28,7 +28,7 @@ const NavTab = styled.div`
 
 
 const client = new GraphQLClient({
-  url: 'http://localhost:8080/graphql'
+  url: 'http://localhost:3001/graphql'
 })
 
 function App() {

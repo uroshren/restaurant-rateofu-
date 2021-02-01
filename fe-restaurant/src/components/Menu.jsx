@@ -11,6 +11,7 @@ const ITEMS = `query {
     name
     price
     type
+    time
   }
 }`;
 
@@ -40,7 +41,6 @@ export const Menu = () => {
   const [orderItems, setOrderItems] = useState([])
 
   const addOrderItems = (items) => {
-    console.log("items", items);
     setOrderItems(items)
   };
 
@@ -58,6 +58,7 @@ export const Menu = () => {
             item={item}
             orderItems={orderItems || []}
             addOrderItems={addOrderItems}
+            isOrder
           />
         )
       })}
